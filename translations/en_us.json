@@ -1,0 +1,5 @@
+{
+    "check_length_too_short": "cannot be shorter than %d characters",
+    "check_length_too_long": "cannot be longer than %d characters",
+    "check_length_out_of_range": "length must be between %d and %d characters"
+}
