@@ -1,5 +1,8 @@
 {
+    "$schema": "./schema.json",
     "check_length_too_short": "cannot be shorter than %d characters",
     "check_length_too_long": "cannot be longer than %d characters",
-    "check_length_out_of_range": "length must be between %d and %d characters"
+    "check_length_out_of_range": "length must be between %d and %d characters",
+    "check_type_bad_match": "cannot convert to %s",
+    "check_type_strict_bad_match": "must be of type %s"
 }

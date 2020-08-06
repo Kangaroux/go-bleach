@@ -6,9 +6,11 @@ import (
 )
 
 const (
-	i18nCheckLengthTooShort   = "check_length_too_short"
-	i18nCheckLengthTooLong    = "check_length_too_long"
-	i18nCheckLengthOutOfRange = "check_length_out_of_range"
+	i18nCheckLengthTooShort     = "check_length_too_short"
+	i18nCheckLengthTooLong      = "check_length_too_long"
+	i18nCheckLengthOutOfRange   = "check_length_out_of_range"
+	i18nCheckTypeBadMatch       = "check_type_bad_match"
+	i18nCheckTypeStrictBadMatch = "check_type_strict_bad_match"
 )
 
 func init() {

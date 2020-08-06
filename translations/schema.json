@@ -1,0 +1,25 @@
+{
+    "id": "github.com/Kangaroux/go-bleach/schema",
+    "description": "go-bleach translation schema",
+    "type": "object",
+    "properties": {
+        "check_length_too_short": {
+            "type": "string"
+        },
+        "check_length_too_long": {
+            "type": "string"
+        },
+        "check_length_out_of_range": {
+            "type": "string"
+        },
+        "check_type_bad_match": {
+            "type": "string"
+        },
+        "check_type_strict_bad_match": {
+            "type": "string"
+        },
+        "$schema": {
+            "type": "string"
+        }
+    }
+}
