@@ -91,8 +91,6 @@ func (c *TypeChecker) Check(in interface{}) error {
 }
 
 // Throws is a chaining method for setting a custom error message for a TypeChecker.
-//
-//		IsType(reflect.TypeOf("")).Throws("must be a string")
 func (c *TypeChecker) Throws(msg string) *TypeChecker {
 	c.message = errors.New(msg)
 	return c
