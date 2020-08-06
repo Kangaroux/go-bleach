@@ -65,7 +65,7 @@ func TrimRight(cutset string) *TrimMutator {
 // same way as strings.TrimSpace()
 func TrimSpace() *TrimMutator {
 	return &TrimMutator{
-		cutset:   strings.TrimSpace("\t\n\v\f\r \u0085\u00A0"),
+		cutset:   "\t\n\v\f\r \u0085\u00A0",
 		trimType: trimBoth,
 	}
 }
