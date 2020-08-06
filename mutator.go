@@ -31,7 +31,7 @@ var _ Mutator = (*TrimMutator)(nil)
 
 // Mutate trims any values contained in the cutset from the beginning and/or end of the input value.
 func (m *TrimMutator) Mutate(in interface{}) interface{} {
-	val := in.(string)
+	val, _ := in.(string)
 
 	if m.trimType == trimLeft {
 		return strings.TrimLeft(val, m.cutset)

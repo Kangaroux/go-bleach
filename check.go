@@ -25,7 +25,8 @@ var _ Checker = (*LengthChecker)(nil)
 
 // Check checks a string's length.
 func (c *LengthChecker) Check(in interface{}) error {
-	length := len(in.(string))
+	val, _ := in.(string)
+	length := len(val)
 
 	if (c.min > 0 && length < c.min) || (c.max > 0 && length > c.max) {
 		return c.message
@@ -43,7 +44,8 @@ func (c *LengthChecker) Throws(msg string) *LengthChecker {
 }
 
 // Length returns a new LengthCheck. The min and max parameters correspond to the minimum and maximum
-// lengths allowed. If max is zero then no maximum length is checked.
+// lengths allowed. If max is zero then only the minimum length is checked. Length panics if min or max
+// are negative.
 //
 // 		// Length must be between [5, 10] characters.
 // 		Length(5, 10)
@@ -53,7 +55,11 @@ func (c *LengthChecker) Throws(msg string) *LengthChecker {
 //
 // 		// Length must be at least 5 characters.
 //		Length(5, 0)
-func Length(min, max int) *LengthChecker {
+func Length(min int, max int) *LengthChecker {
+	if min < 0 || max < 0 {
+		panic("min and max cannot be negative")
+	}
+
 	check := &LengthChecker{
 		min: min,
 		max: max,
