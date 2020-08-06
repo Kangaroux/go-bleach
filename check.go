@@ -6,17 +6,17 @@ import (
 	"reflect"
 )
 
-// LengthChecker checks a string's length.
-type LengthChecker struct {
+// lengthChecker checks a string's length.
+type lengthChecker struct {
 	min     int
 	max     int
 	message error
 }
 
-var _ Checker = (*LengthChecker)(nil)
+var _ CheckerThrower = (*lengthChecker)(nil)
 
 // Check checks a string's length.
-func (c *LengthChecker) Check(in interface{}) error {
+func (c *lengthChecker) Check(in interface{}) error {
 	val, _ := in.(string)
 	length := len(val)
 
@@ -30,7 +30,7 @@ func (c *LengthChecker) Check(in interface{}) error {
 // Throws is a chaining method for setting a custom error message for a LengthChecker.
 //
 //		Length(0, 10).Throws("too long!")
-func (c *LengthChecker) Throws(msg string) *LengthChecker {
+func (c *lengthChecker) Throws(msg string) CheckerThrower {
 	c.message = errors.New(msg)
 	return c
 }
@@ -47,12 +47,12 @@ func (c *LengthChecker) Throws(msg string) *LengthChecker {
 //
 // 		// Length must be at least 5 characters.
 //		Length(5, 0)
-func Length(min int, max int) *LengthChecker {
+func Length(min int, max int) CheckerThrower {
 	if min < 0 || max < 0 {
 		panic("min and max cannot be negative")
 	}
 
-	check := &LengthChecker{
+	check := &lengthChecker{
 		min: min,
 		max: max,
 	}
@@ -68,15 +68,17 @@ func Length(min int, max int) *LengthChecker {
 	return check
 }
 
-// TypeChecker checks that an input value can be converted to a specified type.
-type TypeChecker struct {
+// typeChecker checks that an input value can be converted to a specified type.
+type typeChecker struct {
 	t       reflect.Type
 	strict  bool
 	message error
 }
 
+var _ CheckerThrower = (*typeChecker)(nil)
+
 // Check checks that the input value can be converted to the specified type.
-func (c *TypeChecker) Check(in interface{}) error {
+func (c *typeChecker) Check(in interface{}) error {
 	if c.strict {
 		if !c.t.AssignableTo(reflect.TypeOf(in)) {
 			return c.message
@@ -91,25 +93,25 @@ func (c *TypeChecker) Check(in interface{}) error {
 }
 
 // Throws is a chaining method for setting a custom error message for a TypeChecker.
-func (c *TypeChecker) Throws(msg string) *TypeChecker {
+func (c *typeChecker) Throws(msg string) CheckerThrower {
 	c.message = errors.New(msg)
 	return c
 }
 
-// IsType returns a new TypeChecker. The type parameter t describes what type is allowed for an input.
-// This form of type checking allows values that are convertible to the provided type.
-func IsType(t reflect.Type) *TypeChecker {
-	return &TypeChecker{
+// IsType returns a new Checker that checks whether the input is a valid type. This uses weak type
+// checking which allows the input type to be different so long as it's convertible.
+func IsType(t reflect.Type) CheckerThrower {
+	return &typeChecker{
 		t:       t,
 		strict:  false,
 		message: fmt.Errorf(i18n.get(i18nCheckTypeNotConvertible), t.Kind),
 	}
 }
 
-// IsTypeStrict returns a new TypeChecker. The type parameter t describes what type is allowed
-// for an input. Strict type checking only allows input values that match the type exactly.
-func IsTypeStrict(t reflect.Type) *TypeChecker {
-	return &TypeChecker{
+// IsTypeStrict returns a new Checker that checks whether the input is a valid type. This uses strict
+// type checking which only allows input types that are the same as the provided type.
+func IsTypeStrict(t reflect.Type) CheckerThrower {
+	return &typeChecker{
 		t:       t,
 		strict:  true,
 		message: fmt.Errorf(i18n.get(i18nCheckTypeStrictBadType), t.Kind),

@@ -30,3 +30,15 @@ func (fn MutatorFunc) Mutate(in interface{}) interface{} {
 type Mutator interface {
 	Mutate(interface{}) interface{}
 }
+
+// CheckerThrower is an interface for objects which both have a Check() and a Throws() method.
+type CheckerThrower interface {
+	Checker
+	Thrower
+}
+
+// Thrower is an interface for an object which has a Throws() method. The Throws() method lets the
+// caller set a custom error message if the check fails.
+type Thrower interface {
+	Throws(string) CheckerThrower
+}

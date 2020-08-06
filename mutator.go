@@ -12,17 +12,17 @@ const (
 	trimBoth
 )
 
-// TrimMutator is a mutator which trims characters contained in a cutset from the beginning and/or
+// trimMutator is a mutator which trims characters contained in a cutset from the beginning and/or
 // end of an input.
-type TrimMutator struct {
+type trimMutator struct {
 	cutset   string
 	trimType trimType
 }
 
-var _ Mutator = (*TrimMutator)(nil)
+var _ Mutator = (*trimMutator)(nil)
 
 // Mutate trims any values contained in the cutset from the beginning and/or end of the input value.
-func (m *TrimMutator) Mutate(in interface{}) interface{} {
+func (m *trimMutator) Mutate(in interface{}) interface{} {
 	val, _ := in.(string)
 
 	if m.trimType == trimLeft {
@@ -34,37 +34,37 @@ func (m *TrimMutator) Mutate(in interface{}) interface{} {
 	}
 }
 
-// Trim returns a new TrimMutator which will trim any characters contained in cutset from the beginning
+// Trim returns a new Mutator which will trim any characters contained in cutset from the beginning
 // and end of a string. This works the same way as strings.Trim()
-func Trim(cutset string) *TrimMutator {
-	return &TrimMutator{
+func Trim(cutset string) Mutator {
+	return &trimMutator{
 		cutset:   cutset,
 		trimType: trimBoth,
 	}
 }
 
-// TrimLeft returns a new TrimMutator which trims any characters contained in cutset from the beginning
+// TrimLeft returns a new Mutator which trims any characters contained in cutset from the beginning
 // of a string. This works the same way as strings.TrimLeft()
-func TrimLeft(cutset string) *TrimMutator {
-	return &TrimMutator{
+func TrimLeft(cutset string) Mutator {
+	return &trimMutator{
 		cutset:   cutset,
 		trimType: trimLeft,
 	}
 }
 
-// TrimRight returns a new TrimMutator which trims any characters contained in cutset from the end
+// TrimRight returns a new Mutator which trims any characters contained in cutset from the end
 // of a string. This works the same way as strings.TrimRight()
-func TrimRight(cutset string) *TrimMutator {
-	return &TrimMutator{
+func TrimRight(cutset string) Mutator {
+	return &trimMutator{
 		cutset:   cutset,
 		trimType: trimRight,
 	}
 }
 
-// TrimSpace returns a new TrimMutator which will trim any whitespace characters. This works the
+// TrimSpace returns a new Mutator which will trim any whitespace characters. This works the
 // same way as strings.TrimSpace()
-func TrimSpace() *TrimMutator {
-	return &TrimMutator{
+func TrimSpace() Mutator {
+	return &trimMutator{
 		cutset:   "\t\n\v\f\r \u0085\u00A0",
 		trimType: trimBoth,
 	}
