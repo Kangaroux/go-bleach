@@ -31,14 +31,20 @@ type Mutator interface {
 	Mutate(interface{}) interface{}
 }
 
-// CheckerThrower is an interface for objects which both have a Check() and a Throws() method.
+// Thrower is an interface for an object which has a Throws() method. The Throws() method lets the
+// caller set a custom error message if the check fails.
+type Thrower interface {
+	Throws(string) CheckerThrower
+}
+
+// CheckerThrower is an interface for an object which implements both Check() and Throws().
 type CheckerThrower interface {
 	Checker
 	Thrower
 }
 
-// Thrower is an interface for an object which has a Throws() method. The Throws() method lets the
-// caller set a custom error message if the check fails.
-type Thrower interface {
-	Throws(string) CheckerThrower
+// CheckerThrowerMutator is an interface for an object which implements Check(), Throws(), and Mutate().
+type CheckerThrowerMutator interface {
+	CheckerThrower
+	Mutator
 }
