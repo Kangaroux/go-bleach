@@ -10,7 +10,6 @@ const (
 	i18nCheckLengthTooLong      = "check_length_too_long"
 	i18nCheckLengthOutOfRange   = "check_length_out_of_range"
 	i18nCheckTypeNotConvertible = "check_type_not_convertible"
-	i18nCheckTypeStrictBadType  = "check_type_strict_bad_type"
 )
 
 func init() {

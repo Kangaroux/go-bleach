@@ -71,7 +71,6 @@ func Length(min int, max int) CheckerThrower {
 // typeChecker checks that an input value can be converted to a specified type.
 type typeChecker struct {
 	t       reflect.Type
-	strict  bool
 	message error
 }
 
@@ -79,14 +78,8 @@ var _ CheckerThrower = (*typeChecker)(nil)
 
 // Check checks that the input value can be converted to the specified type.
 func (c *typeChecker) Check(in interface{}) error {
-	if c.strict {
-		if !c.t.AssignableTo(reflect.TypeOf(in)) {
-			return c.message
-		}
-	} else {
-		if !c.t.ConvertibleTo(reflect.TypeOf(in)) {
-			return c.message
-		}
+	if !c.t.ConvertibleTo(reflect.TypeOf(in)) {
+		return c.message
 	}
 
 	return nil
@@ -103,17 +96,6 @@ func (c *typeChecker) Throws(msg string) CheckerThrower {
 func IsType(t reflect.Type) CheckerThrower {
 	return &typeChecker{
 		t:       t,
-		strict:  false,
 		message: fmt.Errorf(i18n.get(i18nCheckTypeNotConvertible), t.Kind),
-	}
-}
-
-// IsTypeStrict returns a new Checker that checks whether the input is a valid type. This uses strict
-// type checking which only allows input types that are the same as the provided type.
-func IsTypeStrict(t reflect.Type) CheckerThrower {
-	return &typeChecker{
-		t:       t,
-		strict:  true,
-		message: fmt.Errorf(i18n.get(i18nCheckTypeStrictBadType), t.Kind),
 	}
 }

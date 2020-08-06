@@ -14,9 +14,6 @@
         },
         "check_type_not_convertible": {
             "type": "string"
-        },
-        "check_type_strict_bad_type": {
-            "type": "string"
         }
     }
 }
