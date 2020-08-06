@@ -3,16 +3,8 @@ package bleach
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
-
-// CheckFunc is a function which is used to check and validate a value. If the value fails the check,
-// the CheckFunc should return an error with the reason why.
-type CheckFunc func(interface{}) error
-
-// Checker is an interface for objects which can be used to check values.
-type Checker interface {
-	Check(interface{}) error
-}
 
 // LengthChecker checks a string's length.
 type LengthChecker struct {
@@ -35,7 +27,7 @@ func (c *LengthChecker) Check(in interface{}) error {
 	return nil
 }
 
-// Throws is a chaining method for setting a custom error message for a LengthCheck.
+// Throws is a chaining method for setting a custom error message for a LengthChecker.
 //
 //		Length(0, 10).Throws("too long!")
 func (c *LengthChecker) Throws(msg string) *LengthChecker {
@@ -43,7 +35,7 @@ func (c *LengthChecker) Throws(msg string) *LengthChecker {
 	return c
 }
 
-// Length returns a new LengthCheck. The min and max parameters correspond to the minimum and maximum
+// Length returns a new LengthChecker. The min and max parameters correspond to the minimum and maximum
 // lengths allowed. If max is zero then only the minimum length is checked. Length panics if min or max
 // are negative.
 //
@@ -74,4 +66,54 @@ func Length(min int, max int) *LengthChecker {
 	}
 
 	return check
+}
+
+// TypeChecker checks that an input value can be converted to a specified type.
+type TypeChecker struct {
+	t       reflect.Type
+	strict  bool
+	message error
+}
+
+// Check checks that the input value can be converted to the specified type.
+func (c *TypeChecker) Check(in interface{}) error {
+	if c.strict {
+		if !c.t.AssignableTo(reflect.TypeOf(in)) {
+			return c.message
+		}
+	} else {
+		if !c.t.ConvertibleTo(reflect.TypeOf(in)) {
+			return c.message
+		}
+	}
+
+	return nil
+}
+
+// Throws is a chaining method for setting a custom error message for a TypeChecker.
+//
+//		IsType(reflect.TypeOf("")).Throws("must be a string")
+func (c *TypeChecker) Throws(msg string) *TypeChecker {
+	c.message = errors.New(msg)
+	return c
+}
+
+// IsType returns a new TypeChecker. The type parameter t describes what type is allowed for an input.
+// This form of type checking allows values that are convertible to the provided type.
+func IsType(t reflect.Type) *TypeChecker {
+	return &TypeChecker{
+		t:       t,
+		strict:  false,
+		message: fmt.Errorf(i18n.get(i18nCheckLengthTooShort), t.Kind),
+	}
+}
+
+// IsTypeStrict returns a new TypeChecker. The type parameter t describes what type is allowed
+// for an input. Strict type checking only allows input values that match the type exactly.
+func IsTypeStrict(t reflect.Type) *TypeChecker {
+	return &TypeChecker{
+		t:       t,
+		strict:  true,
+		message: fmt.Errorf(i18n.get(i18nCheckLengthTooShort), t.Kind),
+	}
 }

@@ -12,14 +12,6 @@ const (
 	trimBoth
 )
 
-// MutatorFunc is a function which accepts a value, modifies it, and then returns it.
-type MutatorFunc func(interface{}) interface{}
-
-// Mutator is an interface for objects which can mutate a value.
-type Mutator interface {
-	Mutate(interface{}) interface{}
-}
-
 // TrimMutator is a mutator which trims characters contained in a cutset from the beginning and/or
 // end of an input.
 type TrimMutator struct {
