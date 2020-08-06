@@ -1,6 +1,7 @@
 package bleach
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -42,6 +43,22 @@ func TrimSpace() Mutator {
 	fn := func(in interface{}) interface{} {
 		val, _ := in.(string)
 		return strings.TrimSpace(val)
+	}
+
+	return MutatorFunc(fn)
+}
+
+// ToString returns a new Mutator which converts the input to a string.
+//
+// 		bool  -> "true" | "false"
+//		nil   -> "null"
+func ToString() Mutator {
+	fn := func(in interface{}) interface{} {
+		if in == nil {
+			return "null"
+		}
+
+		return fmt.Sprintf("%v", in)
 	}
 
 	return MutatorFunc(fn)
