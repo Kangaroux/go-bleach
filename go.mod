@@ -1,4 +1,4 @@
-module github.com/Kangaroux/validation
+module github.com/Kangaroux/go-bleach
 
 go 1.14
 

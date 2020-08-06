@@ -1,4 +1,4 @@
-package validation
+package bleach
 
 import (
 	"encoding/json"
@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	CheckLengthTooShort   = "check_length_too_short"
-	CheckLengthTooLong    = "check_length_too_long"
-	CheckLengthOutOfRange = "check_length_out_of_range"
+	i18nCheckLengthTooShort   = "check_length_too_short"
+	i18nCheckLengthTooLong    = "check_length_too_long"
+	i18nCheckLengthOutOfRange = "check_length_out_of_range"
 )
 
 func init() {
