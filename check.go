@@ -104,7 +104,7 @@ func IsType(t reflect.Type) *TypeChecker {
 	return &TypeChecker{
 		t:       t,
 		strict:  false,
-		message: fmt.Errorf(i18n.get(i18nCheckLengthTooShort), t.Kind),
+		message: fmt.Errorf(i18n.get(i18nCheckTypeNotConvertible), t.Kind),
 	}
 }
 
@@ -114,6 +114,6 @@ func IsTypeStrict(t reflect.Type) *TypeChecker {
 	return &TypeChecker{
 		t:       t,
 		strict:  true,
-		message: fmt.Errorf(i18n.get(i18nCheckLengthTooShort), t.Kind),
+		message: fmt.Errorf(i18n.get(i18nCheckTypeStrictBadType), t.Kind),
 	}
 }

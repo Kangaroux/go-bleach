@@ -12,13 +12,10 @@
         "check_length_out_of_range": {
             "type": "string"
         },
-        "check_type_bad_match": {
+        "check_type_not_convertible": {
             "type": "string"
         },
-        "check_type_strict_bad_match": {
-            "type": "string"
-        },
-        "$schema": {
+        "check_type_strict_bad_type": {
             "type": "string"
         }
     }
